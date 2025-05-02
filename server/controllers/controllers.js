@@ -40,5 +40,16 @@ const decode = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+//
+const redirect = (req, res) => {
+  const { shortUrl } = req.body;
+  const urlEntry = db[shortUrl];
 
-module.exports = { encode, decode };
+  if (!urlEntry) {
+    return res.status(404).json({ error: "URL not found" });
+  }
+
+  urlEntry.visits++;
+  res.redirect(urlEntry.longUrl);
+};
+module.exports = { encode, decode, redirect };
