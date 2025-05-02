@@ -86,3 +86,31 @@ describe("GET /redirect/:code", () => {
     expect(response.body).toHaveProperty("error");
   });
 });
+describe("GET /api/statistics/:code", () => {
+  test("should return URL statistics", async () => {
+    const encodeResponse = await request(app)
+      .post("/api/encode")
+      .send({ longUrl: "https://indicina.co" });
+    const code = encodeResponse.body.shortUrl.split("/").pop();
+
+    // Make a visit to increment counter
+    await request(app).get(`/api/redirect/${code}`).redirects(0);
+
+    const statsResponse = await request(app).get(`/api/statistics/${code}`);
+
+    expect(statsResponse.statusCode).toBe(200);
+    expect(statsResponse.body).toEqual({
+      shortUrl: encodeResponse.body.shortUrl,
+      longUrl: "https://indicina.co",
+      visits: 1,
+      createdAt: expect.any(String),
+      lastAccessed: expect.any(String),
+    });
+  });
+
+  test("should return 404 for invalid code", async () => {
+    const response = await request(app).get("/api/statistics/invalidcode");
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toHaveProperty("error");
+  });
+});
