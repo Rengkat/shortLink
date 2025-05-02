@@ -22,4 +22,23 @@ const encode = async (req, res) => {
   }
 };
 
-module.exports = { encode };
+const decode = async (req, res) => {
+  try {
+    const { shortUrl } = req.body;
+    if (!shortUrl) {
+      return res.status(400).json({ error: "Short URL is required" });
+    }
+
+    const urlEntry = db[shortUrl];
+
+    if (!urlEntry) {
+      return res.status(404).json({ error: "Short URL not found" });
+    }
+
+    res.json({ longUrl: urlEntry.longUrl });
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+module.exports = { encode, decode };
