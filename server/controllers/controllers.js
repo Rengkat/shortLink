@@ -70,4 +70,9 @@ const getStatistics = (req, res) => {
     lastAccessed: new Date(),
   });
 };
-module.exports = { encode, decode, redirect, getStatistics };
+
+const getList = (req, res) => {
+  const urlList = Object.values(db);
+  res.status(200).json(urlList);
+};
+module.exports = { encode, decode, redirect, getStatistics, getList };
