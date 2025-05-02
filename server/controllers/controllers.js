@@ -53,4 +53,21 @@ const redirect = (req, res) => {
   urlEntry.visits++;
   res.redirect(urlEntry.longUrl);
 };
-module.exports = { encode, decode, redirect };
+const getStatistics = (req, res) => {
+  const { code } = req.params;
+  const shortUrl = `http://short.est/${code}`;
+  const urlEntry = db[shortUrl];
+
+  if (!urlEntry) {
+    return res.status(404).json({ error: "URL not found" });
+  }
+
+  res.status(200).json({
+    shortUrl: urlEntry.shortUrl,
+    longUrl: urlEntry.longUrl,
+    visits: urlEntry.visits,
+    createdAt: urlEntry.createdAt,
+    lastAccessed: new Date(),
+  });
+};
+module.exports = { encode, decode, redirect, getStatistics };
