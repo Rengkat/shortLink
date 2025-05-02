@@ -42,7 +42,8 @@ const decode = async (req, res) => {
 };
 //
 const redirect = (req, res) => {
-  const { shortUrl } = req.body;
+  const { code } = req.params;
+  const shortUrl = `http://short.est/${code}`;
   const urlEntry = db[shortUrl];
 
   if (!urlEntry) {

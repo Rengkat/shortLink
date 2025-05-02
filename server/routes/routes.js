@@ -4,6 +4,6 @@ const router = express.Router();
 
 router.post("/encode", encode);
 router.get("/decode", decode);
-router.get("/redirect", redirect);
+router.get("/redirect/:code", redirect);
 
 module.exports = router;
