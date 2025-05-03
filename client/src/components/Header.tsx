@@ -22,11 +22,14 @@ const Header = () => {
 
   // Close mobile menu when clicking outside
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (isMobileMenuOpen && !e.target.closest(".mobile-menu-container")) {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+
+      if (isMobileMenuOpen && target && !target.closest(".mobile-menu-container")) {
         closeMobileMenu();
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMobileMenuOpen]);
