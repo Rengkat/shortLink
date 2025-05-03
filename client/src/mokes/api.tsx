@@ -5,7 +5,7 @@ const simulateNetworkDelay = () =>
   new Promise((resolve) => setTimeout(resolve, Math.random() * 300 + 100));
 
 const mockApi = {
-  encode: async (longUrl) => {
+  encode: async (longUrl: string) => {
     await simulateNetworkDelay();
 
     if (!longUrl) {
@@ -33,7 +33,7 @@ const mockApi = {
     return { shortUrl };
   },
 
-  decode: async (shortUrl) => {
+  decode: async (shortUrl: string) => {
     await simulateNetworkDelay();
 
     if (!shortUrl) {
