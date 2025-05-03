@@ -1,4 +1,5 @@
 import { useState } from "react";
+import UrlForm from "../components/UrlForm";
 
 const Home = () => {
   const [recentUrl, setRecentUrl] = useState(null);
@@ -11,7 +12,7 @@ const Home = () => {
           Create short, URLs and track their performance with our powerful analytics dashboard.
         </p>
       </div>
-
+      <UrlForm onNewUrl={() => setRecentUrl(Date.now())} />
       {recentUrl && (
         <div className="mt-8 text-center">
           <p className="text-gray-600">Your new short link appears above!</p>

@@ -16,7 +16,7 @@ const App = () => {
           </Routes>
         </main>
         <Footer />
-        <Toaster position="top-right" />
+        <Toaster position="top-center" />
       </div>
     </Router>
   );
