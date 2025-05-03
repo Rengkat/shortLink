@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { FiLink, FiCopy, FiArrowRight } from "react-icons/fi";
 import { decodeUrl } from "../mokes/mockApiService";
 import copy from "copy-to-clipboard";
@@ -9,7 +9,7 @@ const DecodePage = () => {
   const [longUrl, setLongUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!shortUrl) return;
 
@@ -19,7 +19,7 @@ const DecodePage = () => {
       setLongUrl(decodedUrl);
       toast.success("URL decoded successfully!");
     } catch (error) {
-      toast.error(error.message || "Failed to decode URL");
+      toast.error((error as Error).message || "Failed to decode URL");
       setLongUrl("");
     } finally {
       setIsLoading(false);
@@ -32,7 +32,7 @@ const DecodePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center py-12">
+    <div className="flex flex-col items-center py-12 h-[80vh]">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">Decode Short URLs</h1>
         <p className="text-lg text-gray-600 max-w-2xl">

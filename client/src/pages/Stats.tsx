@@ -9,7 +9,7 @@ import { getUrlStats } from "../mokes/mockApiService";
 
 const Stats = () => {
   const { code } = useParams();
-  const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

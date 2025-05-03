@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import { FiSearch, FiClock, FiEye } from "react-icons/fi";
-import { formatDistanceToNow } from "date-fns";
+import { FiSearch } from "react-icons/fi";
+// import { formatDistanceToNow } from "date-fns";
 import { getUrlList } from "../mokes/mockApiService";
 import LoadingSpinner from "../components/LoadingSpinner";
 import UrlItem from "../components/UrlItem";
-// import UrlItem from "./UrlItem";
 
 const UrlList = () => {
-  const [urls, setUrls] = useState([]);
+  const [urls, setUrls] = useState<string[] | any>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -20,6 +19,7 @@ const UrlList = () => {
         console.log(data);
       } catch (error) {
         console.error("Failed to fetch URLs:", error);
+        setUrls(null); // Reset URLs on error
       } finally {
         setIsLoading(false);
       }
@@ -32,6 +32,10 @@ const UrlList = () => {
       }, 500);
 
       return () => clearTimeout(debounceTimer);
+    } else {
+      // If query is less than 3 chars and not empty, clear results
+      setUrls(null);
+      setIsLoading(false);
     }
   }, [searchQuery]);
 
@@ -56,13 +60,13 @@ const UrlList = () => {
       </div>
       {isLoading ? (
         <div className="flex justify-center py-8">{<LoadingSpinner />}</div>
-      ) : urls.length === 0 ? (
+      ) : urls?.length === 0 ? (
         <div className="text-center py-8 text-gray-500">
           {searchQuery ? "No URLs match your search" : "No URLs created yet"}
         </div>
       ) : (
         <div className="space-y-4 w-[70%] mx-auto">
-          {urls.map((url) => (
+          {urls?.map((url: any) => (
             <UrlItem key={url.shortUrl} url={url} />
           ))}
         </div>

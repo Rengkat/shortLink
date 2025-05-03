@@ -1,16 +1,28 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { FiLink, FiCopy } from "react-icons/fi";
 import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
+import { encodeUrl } from "../mokes/mockApiService";
 
-const UrlForm = ({ onNewUrl }) => {
+const UrlForm = () => {
   const [longUrl, setLongUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!longUrl) return;
+
+    setIsLoading(true);
+    try {
+      const { shortUrl: data } = await encodeUrl(longUrl);
+      setShortUrl(data);
+      toast.success("URL decoded successfully!");
+    } catch (error) {
+      toast.error((error as Error).message || "Failed to decode URL");
+      setLongUrl("");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCopy = () => {
