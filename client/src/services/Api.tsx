@@ -73,3 +73,24 @@ export const getUrlStats = async (code: string): Promise<UrlEntry> => {
     throw error;
   }
 };
+
+export const getUrlList = async (query = ""): Promise<UrlEntry[]> => {
+  try {
+    const url = new URL(`${API_BASE_URL}/list`);
+    if (query) {
+      url.searchParams.append("q", query);
+    }
+
+    const response = await fetch(url.toString());
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to get URL list");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("List error:", error);
+    throw error;
+  }
+};
