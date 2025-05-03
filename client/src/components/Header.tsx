@@ -88,6 +88,52 @@ const Header = () => {
             {isMobileMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
           </button>
         </div>
+
+        {/* Mobile Menu */}
+        <div
+          className={`mobile-menu-container md:hidden fixed inset-0 bg-white z-40 transition-all duration-300 ease-in-out ${
+            isMobileMenuOpen
+              ? "opacity-100 translate-y-0 pt-20"
+              : "opacity-0 -translate-y-full pointer-events-none"
+          }`}>
+          <div className="container mx-auto px-4 py-6">
+            <nav className="flex flex-col space-y-4">
+              <NavLink
+                to="/"
+                onClick={closeMobileMenu}
+                className={({ isActive }) =>
+                  `flex items-center space-x-3 px-4 py-3 rounded-lg text-lg ${
+                    isActive ? "text-indigo-600 bg-indigo-50" : "text-gray-700 hover:bg-gray-100"
+                  }`
+                }>
+                <FiHome className="text-xl" />
+                <span>Home</span>
+              </NavLink>
+              <NavLink
+                to="/dashboard"
+                onClick={closeMobileMenu}
+                className={({ isActive }) =>
+                  `flex items-center space-x-3 px-4 py-3 rounded-lg text-lg ${
+                    isActive ? "text-indigo-600 bg-indigo-50" : "text-gray-700 hover:bg-gray-100"
+                  }`
+                }>
+                <FiLink className="text-xl" />
+                <span>My Links</span>
+              </NavLink>
+              <NavLink
+                to="/stats"
+                onClick={closeMobileMenu}
+                className={({ isActive }) =>
+                  `flex items-center space-x-3 px-4 py-3 rounded-lg text-lg ${
+                    isActive ? "text-indigo-600 bg-indigo-50" : "text-gray-700 hover:bg-gray-100"
+                  }`
+                }>
+                <FiBarChart2 className="text-xl" />
+                <span>Analytics</span>
+              </NavLink>
+            </nav>
+          </div>
+        </div>
       </div>
     </header>
   );
