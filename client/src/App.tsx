@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import UrlList from "./pages/UrlList";
 import Stats from "./pages/Stats";
+import DecodePage from "./pages/Decode";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/link-list" element={<UrlList />} />
             <Route path="/stats/:code" element={<Stats />} />
+            <Route path="/decode" element={<DecodePage />} />
           </Routes>
         </main>
         <Footer />

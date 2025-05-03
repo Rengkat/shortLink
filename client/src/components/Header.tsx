@@ -72,7 +72,7 @@ const Header = () => {
               <span>My Links</span>
             </NavLink>
             <NavLink
-              to="/decode-url"
+              to="/decode"
               className={({ isActive }) =>
                 `flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
                   isActive ? "text-indigo-600 bg-indigo-50" : "text-gray-600 hover:text-indigo-600"
