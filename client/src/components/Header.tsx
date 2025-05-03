@@ -72,14 +72,14 @@ const Header = () => {
               <span>My Links</span>
             </NavLink>
             <NavLink
-              to="/stats"
+              to="/decode-url"
               className={({ isActive }) =>
                 `flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
                   isActive ? "text-indigo-600 bg-indigo-50" : "text-gray-600 hover:text-indigo-600"
                 }`
               }>
               <FiBarChart2 className="text-lg" />
-              <span>Analytics</span>
+              <span>Decode Links</span>
             </NavLink>
           </nav>
 
@@ -113,7 +113,7 @@ const Header = () => {
                 <span>Home</span>
               </NavLink>
               <NavLink
-                to="/dashboard"
+                to="/link-list"
                 onClick={closeMobileMenu}
                 className={({ isActive }) =>
                   `flex items-center space-x-3 px-4 py-3 rounded-lg text-lg ${
@@ -124,7 +124,7 @@ const Header = () => {
                 <span>My Links</span>
               </NavLink>
               <NavLink
-                to="/stats"
+                to="/decode"
                 onClick={closeMobileMenu}
                 className={({ isActive }) =>
                   `flex items-center space-x-3 px-4 py-3 rounded-lg text-lg ${
@@ -132,7 +132,7 @@ const Header = () => {
                   }`
                 }>
                 <FiBarChart2 className="text-xl" />
-                <span>Analytics</span>
+                <span>Decode Links</span>
               </NavLink>
             </nav>
           </div>

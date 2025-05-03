@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import UrlList from "./pages/UrlList";
+import Stats from "./pages/Stats";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/link-list" element={<UrlList />} />
+            <Route path="/stats/:code" element={<Stats />} />
           </Routes>
         </main>
         <Footer />
