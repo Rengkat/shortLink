@@ -1,9 +1,18 @@
-function App() {
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+
+import { Toaster } from "react-hot-toast";
+
+const App = () => {
   return (
-    <>
-      <h1 className="text-red-600 font-bold">hi</h1>
-    </>
+    <Router>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="container mx-auto px-4 py-8"></main>
+        <Toaster position="top-right" />
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
