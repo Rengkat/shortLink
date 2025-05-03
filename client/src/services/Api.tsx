@@ -57,3 +57,19 @@ export const decodeUrl = async (shortUrl: string): Promise<UrlResponse> => {
     throw error;
   }
 };
+
+export const getUrlStats = async (code: string): Promise<UrlEntry> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/statistic/${code}`);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to get URL stats");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Stats error:", error);
+    throw error;
+  }
+};
