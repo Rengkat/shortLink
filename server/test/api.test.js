@@ -114,3 +114,24 @@ describe("GET /api/statistics/:code", () => {
     expect(response.body).toHaveProperty("error");
   });
 });
+describe("GET /api/list", () => {
+  //clear the db firtst
+  beforeEach(() => {
+    for (const key in db) {
+      delete db[key];
+    }
+  });
+
+  test("should return all URLs", async () => {
+    await request(app).post("/api/encode").send({ longUrl: "https://indicina.co" });
+    await request(app).post("/api/encode").send({ longUrl: "https://indicina.com" });
+
+    const listResponse = await request(app).get("/api/list");
+
+    expect(listResponse.statusCode).toBe(200);
+    expect(listResponse.body.length).toBe(2);
+    expect(listResponse.body[0]).toHaveProperty("longUrl");
+    expect(listResponse.body[0]).toHaveProperty("shortUrl");
+    expect(listResponse.body[0]).toHaveProperty("createdAt");
+  });
+});

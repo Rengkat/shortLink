@@ -40,7 +40,7 @@ const decode = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
-//
+
 const redirect = (req, res) => {
   const { code } = req.params;
   const shortUrl = `http://short.est/${code}`;
