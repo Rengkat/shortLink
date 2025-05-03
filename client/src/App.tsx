@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import { Toaster } from "react-hot-toast";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
+import UrlList from "./pages/UrlList";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <main className="container mx-auto px-4 py-8">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/link-list" element={<UrlList />} />
           </Routes>
         </main>
         <Footer />
