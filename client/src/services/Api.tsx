@@ -94,3 +94,30 @@ export const getUrlList = async (query = ""): Promise<UrlEntry[]> => {
     throw error;
   }
 };
+export const trackVisit = async (shortUrl: string): Promise<void> => {
+  try {
+    const code = shortUrl.split("/").pop();
+    if (!code) return;
+
+    await fetch(`${API_BASE_URL}/${code}`, {
+      method: "HEAD",
+    });
+  } catch (error) {
+    console.error("Visit tracking error:", error);
+  }
+};
+
+export const redirectToLongUrl = async (shortUrl: string): Promise<void> => {
+  try {
+    // First track the visit
+    await trackVisit(shortUrl);
+
+    // Then get the long URL to redirect to
+    const { longUrl } = await decodeUrl(shortUrl);
+    window.location.href = longUrl;
+  } catch (error) {
+    console.error("Redirect failed:", error);
+    // Fallback to opening the short URL directly
+    window.open(shortUrl, "_blank");
+  }
+};
