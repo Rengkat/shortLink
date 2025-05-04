@@ -5,13 +5,12 @@ import { format, formatDistanceToNow } from "date-fns";
 
 import LoadingSpinner from "../components/LoadingSpinner";
 import { Link } from "react-router-dom";
-import { getUrlStats } from "../mokes/mockApiService";
+import { getUrlStats, redirectToLongUrl } from "../services/Api";
 
 const Stats = () => {
   const { code } = useParams();
   const [stats, setStats] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     const fetchStats = async () => {
       setIsLoading(true);
@@ -61,6 +60,9 @@ const Stats = () => {
               href={stats.shortUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={async () => {
+                await redirectToLongUrl(stats.shortUrl);
+              }}
               className="text-indigo-600 hover:underline break-all">
               {stats.shortUrl}
             </a>

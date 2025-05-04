@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { FiLink, FiCopy } from "react-icons/fi";
 import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
-import { encodeUrl } from "../services/Api";
+import { encodeUrl, redirectToLongUrl } from "../services/Api";
 
 const UrlForm = () => {
   const [longUrl, setLongUrl] = useState("");
@@ -94,9 +94,8 @@ const UrlForm = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="text-indigo-600 hover:underline break-all"
-              onClick={() => {
-                // Track the visit when someone clicks the link
-                fetch(shortUrl, { method: "HEAD" }).catch(console.error);
+              onClick={async () => {
+                await redirectToLongUrl(shortUrl);
               }}>
               {shortUrl}
             </a>

@@ -60,7 +60,7 @@ export const decodeUrl = async (shortUrl: string): Promise<UrlResponse> => {
 
 export const getUrlStats = async (code: string): Promise<UrlEntry> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/statistic/${code}`);
+    const response = await fetch(`${API_BASE_URL}/statistics/${code}`);
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -99,9 +99,16 @@ export const trackVisit = async (shortUrl: string): Promise<void> => {
     const code = shortUrl.split("/").pop();
     if (!code) return;
 
-    await fetch(`${API_BASE_URL}/${code}`, {
+    const response = await fetch(`${API_BASE_URL}/${code}`, {
       method: "HEAD",
     });
+
+    if (!response.ok) {
+      // Fallback to GET if HEAD fails
+      await fetch(`${API_BASE_URL}/${code}`, {
+        method: "GET",
+      });
+    }
   } catch (error) {
     console.error("Visit tracking error:", error);
   }
@@ -109,16 +116,20 @@ export const trackVisit = async (shortUrl: string): Promise<void> => {
 
 export const redirectToLongUrl = async (shortUrl: string): Promise<void> => {
   try {
-    // First track the visit
+    // Track visit first
     await trackVisit(shortUrl);
 
+    // Then get the long URL
     const { longUrl } = await decodeUrl(shortUrl);
 
-    // Open in a new window or tab
-    window.open(longUrl, "_blank");
+    const newWindow = window.open("", "_blank");
+    if (newWindow) {
+      newWindow.location.href = longUrl;
+    } else {
+      window.location.href = longUrl;
+    }
   } catch (error) {
     console.error("Redirect failed:", error);
-
     window.open(shortUrl, "_blank");
   }
 };
