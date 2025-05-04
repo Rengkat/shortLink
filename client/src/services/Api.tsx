@@ -112,12 +112,13 @@ export const redirectToLongUrl = async (shortUrl: string): Promise<void> => {
     // First track the visit
     await trackVisit(shortUrl);
 
-    // Then get the long URL to redirect to
     const { longUrl } = await decodeUrl(shortUrl);
-    window.location.href = longUrl;
+
+    // Open in a new window or tab
+    window.open(longUrl, "_blank");
   } catch (error) {
     console.error("Redirect failed:", error);
-    // Fallback to opening the short URL directly
+
     window.open(shortUrl, "_blank");
   }
 };

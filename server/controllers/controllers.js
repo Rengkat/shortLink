@@ -40,7 +40,19 @@ const decode = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+const trackVisit = (req, res) => {
+  const { code } = req.params;
+  const shortUrl = `http://short.est/${code}`;
+  const urlEntry = db[shortUrl];
 
+  if (!urlEntry) {
+    return res.status(404).end();
+  }
+
+  console.log("Visit tracked for:", shortUrl);
+  urlEntry.visits++;
+  return res.status(200).end();
+};
 const redirect = (req, res) => {
   const { code } = req.params;
   const shortUrl = `http://short.est/${code}`;
@@ -49,7 +61,7 @@ const redirect = (req, res) => {
   if (!urlEntry) {
     return res.status(404).json({ error: "URL not found" });
   }
-
+  console.log("hit");
   urlEntry.visits++;
   res.redirect(urlEntry.longUrl);
 };
@@ -75,4 +87,4 @@ const getList = (req, res) => {
   const urlList = Object.values(db);
   res.status(200).json(urlList);
 };
-module.exports = { encode, decode, redirect, getStatistics, getList };
+module.exports = { encode, decode, redirect, getStatistics, getList, trackVisit };

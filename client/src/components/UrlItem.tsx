@@ -3,11 +3,19 @@ import { format } from "date-fns";
 import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-
-const UrlItem = ({ url }) => {
+import { redirectToLongUrl } from "../services/Api";
+interface Props {
+  url: { shortUrl: string; longUrl: string; visits: number; createdAt: string };
+}
+const UrlItem = ({ url }: Props) => {
   const handleCopy = () => {
     copy(url.shortUrl);
     toast.success("Copied to clipboard!");
+  };
+
+  const handleShortUrlClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    await redirectToLongUrl(url.shortUrl);
   };
 
   return (
@@ -19,13 +27,15 @@ const UrlItem = ({ url }) => {
               href={url.shortUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-indigo-600 hover:underline font-medium break-all">
+              className="text-indigo-600 hover:underline font-medium break-all"
+              onClick={handleShortUrlClick}>
               {url.shortUrl}
             </a>
             <button
               onClick={handleCopy}
               className="ml-2 p-1 text-gray-500 hover:text-indigo-600 rounded-full hover:bg-gray-100"
-              title="Copy to clipboard">
+              title="Copy to clipboard"
+              aria-label="Copy to clipboard">
               <FiCopy size={16} />
             </button>
           </div>
@@ -44,7 +54,8 @@ const UrlItem = ({ url }) => {
           <Link
             to={`/stats/${url.shortUrl.split("/").pop()}`}
             className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-full"
-            title="View stats">
+            title="View stats"
+            aria-label="View statistics">
             <FiExternalLink size={18} />
           </Link>
         </div>
