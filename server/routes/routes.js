@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/list", getList);
 router.post("/encode", encode);
-router.get("/decode", decode);
+router.post("/decode", decode);
 router.get("/redirect/:code", redirect);
 router.get("/statistics/:code", getStatistics);
 

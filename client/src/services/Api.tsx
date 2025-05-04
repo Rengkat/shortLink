@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL = "http://localhost:5000/api";
 
 interface UrlResponse {
   shortUrl?: string;
@@ -39,7 +39,7 @@ export const encodeUrl = async (longUrl: string): Promise<UrlResponse> => {
 export const decodeUrl = async (shortUrl: string): Promise<UrlResponse> => {
   try {
     const response = await fetch(`${API_BASE_URL}/decode`, {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },

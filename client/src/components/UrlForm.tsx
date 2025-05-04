@@ -2,32 +2,50 @@ import { FormEvent, useState } from "react";
 import { FiLink, FiCopy } from "react-icons/fi";
 import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
-import { encodeUrl } from "../mokes/mockApiService";
+import { encodeUrl } from "../services/Api";
 
 const UrlForm = () => {
   const [longUrl, setLongUrl] = useState("");
-  const [shortUrl, setShortUrl] = useState("");
+  const [shortUrl, setShortUrl] = useState<any>("");
   const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!longUrl) return;
 
     setIsLoading(true);
     try {
+      // Validate URL format first
+      if (!isValidUrl(longUrl)) {
+        throw new Error("Please enter a valid URL (include http:// or https://)");
+      }
+
       const { shortUrl: data } = await encodeUrl(longUrl);
       setShortUrl(data);
-      toast.success("URL decoded successfully!");
-    } catch (error) {
-      toast.error((error as Error).message || "Failed to decode URL");
+      toast.success("URL shortened successfully!");
       setLongUrl("");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to shorten URL";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleCopy = () => {
+    if (!shortUrl) return;
     copy(shortUrl);
     toast.success("Copied to clipboard!");
+  };
+
+  //  validate URL format
+  const isValidUrl = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   return (
@@ -50,15 +68,18 @@ const UrlForm = () => {
               placeholder="https://example.com/very-long-url"
               className="flex-1 py-2 px-1 focus:outline-none"
               required
+              pattern="https?://.+"
+              title="Include http:// or https://"
             />
           </div>
+          <p className="text-xs text-gray-500">Must include http:// or https://</p>
         </div>
 
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || !longUrl}
           className={`w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200 ${
-            isLoading ? "opacity-70 cursor-not-allowed" : ""
+            isLoading || !longUrl ? "opacity-70 cursor-not-allowed" : ""
           }`}>
           {isLoading ? "Shortening..." : "Shorten URL"}
         </button>
@@ -72,13 +93,18 @@ const UrlForm = () => {
               href={shortUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-indigo-600 hover:underline break-all">
+              className="text-indigo-600 hover:underline break-all"
+              onClick={() => {
+                // Track the visit when someone clicks the link
+                fetch(shortUrl, { method: "HEAD" }).catch(console.error);
+              }}>
               {shortUrl}
             </a>
             <button
               onClick={handleCopy}
               className="ml-2 p-2 text-gray-500 hover:text-indigo-600 rounded-full hover:bg-gray-100"
-              title="Copy to clipboard">
+              title="Copy to clipboard"
+              aria-label="Copy to clipboard">
               <FiCopy />
             </button>
           </div>
